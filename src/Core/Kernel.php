@@ -4,30 +4,56 @@ declare(strict_types=1);
 
 namespace Core;
 
-use Core\Interfaces\VideoStoreInterface;
+use Core\Interfaces\KartInterface;
 use Models\Enums\TransactionTypeEnum;
 use Models\Interfaces\CustomerInterface;
 use Models\Interfaces\TransactionInterface;
 use Models\TransactionModel;
 
-class Kernel implements VideoStoreInterface
+
+final class Kernel extends AbstractStoreManager
 {
     /**
      * @inheritDoc
      */
     public function executeTransaction(
         CustomerInterface   $customer,
-        array               $products,
         TransactionTypeEnum $transactionType = TransactionTypeEnum::QUOTATION
     ): TransactionInterface
     {
-        // TODO: Implement executeTransaction() method.
-        // 1. Start transaction
-        $transaction = new TransactionModel($customer, $transactionType, $products);
+        return new TransactionModel($customer, $this->kart, $transactionType);
+    }
 
-        // 2. Calculate bonuses
-        // 3. Calculate taxes (using an external service?)
+    /**
+     * @inheritDoc
+     */
+    public function runClassification(array $transactions): array
+    {
+        return $this->classificationService->run($transactions);
+    }
 
-        return $transaction;
+    /**
+     * @inheritDoc
+     */
+    public function runSubscription(array $transactions): array
+    {
+        return $this->subscriptionService->run($transactions);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function runTaxation(array $transactions): array
+    {
+        // TODO: implement
+        return $transactions;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getKart(): KartInterface
+    {
+        return $this->kart;
     }
 }

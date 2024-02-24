@@ -4,29 +4,62 @@ declare(strict_types=1);
 
 namespace Models;
 
+use Core\Interfaces\KartInterface;
 use Models\Enums\TransactionTypeEnum;
 use Models\Interfaces\CustomerInterface;
 use Models\Interfaces\TransactionInterface;
 
 class TransactionModel extends AbstractBaseModel implements TransactionInterface
 {
-    public readonly float $total;
+    private float $subTotal;
+    private float $total;
+    private int $earnedPoints = 0;
 
     /**
      * Transaction Model Constructor
      *
      * @param CustomerInterface $customer
+     * @param KartInterface $kart
      * @param TransactionTypeEnum $type
-     * @param ProductModel[] $products
      */
     public function __construct(
         private readonly CustomerInterface $customer,
-        private TransactionTypeEnum        $type = TransactionTypeEnum::QUOTATION,
-        private array                      $products = []
+        private readonly KartInterface     $kart,
+        private TransactionTypeEnum        $type = TransactionTypeEnum::QUOTATION
     )
     {
         $this->id = self::nextId();
+        $this->subTotal = 0.0;
         $this->total = 0.0;
+        $this->run();
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function run(): void
+    {
+        $this->subTotal = 0;
+        $items = $this->kart->getItems();
+
+        // 1. Calculate sub-totals and per-item stuff
+        foreach ($items as $kartItem) {
+            $this->subTotal += $kartItem->getPrice() * $kartItem->qty;
+            $this->earnedPoints++;
+        }
+
+        // 2. Calculate grand total
+        $this->total = $this->subTotal;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setType(TransactionTypeEnum $value): void
+    {
+        $this->type = $value;
+        $this->run();
     }
 
     /**
@@ -40,36 +73,40 @@ class TransactionModel extends AbstractBaseModel implements TransactionInterface
     /**
      * @inheritDoc
      */
-    public function getProducts(): array
+    public function getKart(): KartInterface
     {
-        return $this->products;
+        return $this->kart;
     }
 
     /**
      * @inheritDoc
      */
-    public function setProducts(array $values): void
+    public function getEarnedPoints(): int
     {
-        $this->products = $values;
+        return $this->earnedPoints;
     }
 
     /**
      * @inheritDoc
      */
-    public function run(): bool
+    public function getTotal(): float
     {
-        // TODO: Implement run() method.
-        // 1. Calculate total value
-
-        return false;
+        return $this->total;
     }
 
     /**
      * @inheritDoc
      */
-    public function setType(TransactionTypeEnum $value): bool
+    public function setEarnedPoints(int $value): void
     {
-        $this->type = $value;
-        return $this->run();
+        $this->earnedPoints = $value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setTotal(float $value): void
+    {
+        $this->total = $value;
     }
 }
