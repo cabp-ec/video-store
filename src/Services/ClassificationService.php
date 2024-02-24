@@ -56,7 +56,7 @@ final class ClassificationService implements TransactionalServiceInterface
      * Calculate the CHILDREN pricing for the given kart item
      *
      * @param KartItem $kartItem
-     * @return void
+     * @return float
      */
     private function calculateItemPriceChildren(KartItem $kartItem): float
     {
@@ -99,6 +99,8 @@ final class ClassificationService implements TransactionalServiceInterface
                         break;
                 }
 
+                $kartItem->setPrice($itemPrice);
+                $kartItem->setTotalPrice($itemPrice * $kartItem->qty);
                 $total += $itemPrice;
             }
 

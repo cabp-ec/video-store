@@ -9,6 +9,13 @@ use DateTimeInterface;
 interface CustomerInterface extends ModelInterface
 {
     /**
+     * Get the customer name
+     *
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
      * Get transactions performed a Customer during a period of time
      *
      * @param DateTimeInterface|null $from

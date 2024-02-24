@@ -10,7 +10,8 @@ class KartItem
         public readonly ProductModel $product,
         public int                   $qty,
         public int                   $rentTime,
-        private float                $price = 0.0
+        private float                $price = 0.0,
+        private float                $totalPrice = 0.0
     )
     {
         if ($this->rentTime < 0) {
@@ -20,6 +21,8 @@ class KartItem
         if ($this->price < 0) {
             throw new \Error('Price cannot be a negate value');
         }
+
+        $this->calculateBasePrice();
     }
 
     /**
@@ -43,10 +46,17 @@ class KartItem
      */
     public function getPrice(): float
     {
-        $this->calculateBasePrice();
-        // Do other necessary calculations here
-
         return $this->price;
+    }
+
+    /**
+     * Get the total price for the item
+     *
+     * @return float
+     */
+    public function getTotalPrice(): float
+    {
+        return $this->totalPrice;
     }
 
     /**
@@ -58,5 +68,16 @@ class KartItem
     public function setPrice(float $value): void
     {
         $this->price = $value;
+    }
+
+    /**
+     * Set the total price for the item (i.e. QTY * PRICE)
+     *
+     * @param float $value
+     * @return void
+     */
+    public function setTotalPrice(float $value): void
+    {
+        $this->totalPrice = $value;
     }
 }

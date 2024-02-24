@@ -26,6 +26,14 @@ class CustomerModel extends AbstractBaseModel implements CustomerInterface
     /**
      * @inheritDoc
      */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getTransactions(DateTimeInterface $from = null, DateTimeInterface $to = null): array
     {
         return [];
