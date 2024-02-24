@@ -30,15 +30,12 @@ final class ClassificationService implements TransactionalServiceInterface
      */
     private function calculateItemPriceRegular(KartItem $kartItem): float
     {
-        echo '<hr>calculateItemPriceRegular<br>';
-        echo 'rentTime: ' . $kartItem->rentTime . '<br>';
         $price = $kartItem->getPrice() + self::PRICE_REGULAR;
 
         if ($kartItem->rentTime > self::RENT_TIME_LIMIT_REGULAR) {
             $price += ($kartItem->rentTime - self::DECREASE_FACTOR_REGULAR) * self::RENT_FACTOR_REGULAR;
         }
 
-        echo 'price: ' . $price . '<br>';
         return $price;
     }
 
@@ -50,11 +47,8 @@ final class ClassificationService implements TransactionalServiceInterface
      */
     private function calculateItemPriceNewRelease(KartItem $kartItem): float
     {
-        echo '<hr>calculateItemPriceNewRelease<br>';
-        echo 'rentTime: ' . $kartItem->rentTime . '<br>';
         $price = $kartItem->getPrice();
         $price += $kartItem->rentTime * self::RENT_FACTOR_NEW_RELEASE;
-        echo 'price: ' . $price . '<br>';
         return $price;
     }
 
@@ -66,15 +60,12 @@ final class ClassificationService implements TransactionalServiceInterface
      */
     private function calculateItemPriceChildren(KartItem $kartItem): float
     {
-        echo '<hr>calculateItemPriceChildren<br>';
-        echo 'rentTime: ' . $kartItem->rentTime . '<br>';
         $price = $kartItem->getPrice() + self::PRICE_CHILDREN;
 
         if ($kartItem->rentTime > self::RENT_TIME_LIMIT_CHILDREN) {
             $price += ($kartItem->rentTime - self::DECREASE_FACTOR_CHILDREN) * self::RENT_FACTOR_CHILDREN;
         }
 
-        echo 'price: ' . $price . '<br>';
         return $price;
     }
 
@@ -109,7 +100,6 @@ final class ClassificationService implements TransactionalServiceInterface
                 }
 
                 $total += $itemPrice;
-                echo $total . '<br>';
             }
 
             $transaction->setTotal($total);

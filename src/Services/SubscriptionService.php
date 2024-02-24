@@ -26,15 +26,17 @@ final class SubscriptionService implements TransactionalServiceInterface
             $items = $transaction->getKart()->getItems();
             $points = $transaction->getEarnedPoints();
 
-            foreach ($items as &$kartItem) {
+            foreach ($items as $kartItem) {
                 /** @var MovieProductModel $movie */
                 $movie = $kartItem->product;
-                $isNewRelease = $movie->getMovieClassification() == MovieClassificationEnum::NEW_RELEASE;
+                $isNewRelease = $movie->getMovieClassification()->key == MovieClassificationEnum::NEW_RELEASE;
 
                 if ($isNewRelease && $kartItem->rentTime > self::RENT_TIME_FACTOR_NEW_RELEASE) {
-                    $transaction->setEarnedPoints($points + self::RENT_TIME_BONUS_NEW_RELEASE);
+                    $points += self::RENT_TIME_BONUS_NEW_RELEASE;
                 }
             }
+
+            $transaction->setEarnedPoints($points);
         }
     }
 

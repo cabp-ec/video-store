@@ -64,21 +64,22 @@ $customerJohnDoe = new CustomerModel('John Doe', 'Boston');
 $service = new Kernel();
 
 $kart = $service->getKart();
-$kart->addItem($predator_1, 1, 3)
-    ->addItem($predator_2, 1, 3)
-    ->addItem($samaritan_2, 1, 1)
+$kart->addItem($predator_1, 1, 1)
+//    ->addItem($predator_2, 1, 3)
+    ->addItem($samaritan_2, 1, 3)
     ->addItem($spiderman_and_friends, 1, 1);
 
 // 5. Execute transaction
 /** @var TransactionModel $quotation */
 $quotation = $service->runTaxation(
-    $service->runClassification([
-        $service->executeTransaction($customerJohnDoe),
-    ])
+    $service->runSubscription(
+        $service->runClassification([
+            $service->executeTransaction($customerJohnDoe),
+        ])
+    )
 )[0];
 
-//echo '<pre>';
-echo '<hr>';
+echo '<pre>';
 echo 'Total: ' . $quotation->getTotal() . '<br>';
 echo 'Points: ' . $quotation->getEarnedPoints() . '<br>';
 
