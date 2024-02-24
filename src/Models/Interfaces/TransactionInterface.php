@@ -4,11 +4,28 @@ declare(strict_types=1);
 
 namespace Models\Interfaces;
 
+use Core\Interfaces\KartInterface;
 use Models\Enums\TransactionTypeEnum;
 use Models\ProductModel;
 
 interface TransactionInterface
 {
+    /**
+     * Execute the current transaction
+     * TODO: calculate in-bulk purchases
+     *
+     * @return void
+     */
+    public function run(): void;
+
+    /**
+     * Set the transaction type, this causes a re-run
+     *
+     * @param TransactionTypeEnum $value
+     * @return void
+     */
+    public function setType(TransactionTypeEnum $value): void;
+
     /**
      * Get the Customer owner of this transaction
      *
@@ -17,32 +34,39 @@ interface TransactionInterface
     public function getCustomer(): CustomerInterface;
 
     /**
-     * Get all products involved in the current transaction
+     * Get the kart instance
      *
-     * @return array
+     * @return KartInterface
      */
-    public function getProducts(): array;
+    public function getKart(): KartInterface;
 
     /**
-     * Set products involved in the current transaction
+     * Get the earned points in the current transaction
      *
-     * @param ProductModel[] $values
+     * @return int
+     */
+    public function getEarnedPoints(): int;
+
+    /**
+     * Get the total value for the current transaction
+     *
+     * @return float
+     */
+    public function getTotal(): float;
+
+    /**
+     * Set the points earned in the current transaction
+     *
+     * @param int $value
      * @return void
      */
-    public function setProducts(array $values): void;
+    public function setEarnedPoints(int $value): void;
 
     /**
-     * Execute the current transaction
+     * Set the total value for the current transaction
      *
-     * @return bool
+     * @param float $value
+     * @return void
      */
-    public function run(): bool;
-
-    /**
-     * Set the transaction type, this causes a re-run
-     *
-     * @param TransactionTypeEnum $value
-     * @return bool
-     */
-    public function setType(TransactionTypeEnum $value): bool;
+    public function setTotal(float $value): void;
 }
