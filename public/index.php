@@ -1,6 +1,26 @@
 <?php
 
-$codedir = '../src';
+declare(strict_types=1);
+
+require_once '../src/Autoloader.php';
+Autoloader::run();
+
+use Core\Kernel;
+use Models\CustomerModel;
+
+
+$service = new Kernel();
+
+$quotationTransaction = $service->executeTransaction(
+    new CustomerModel('John Doe', 'Boston'),
+    []
+);
+
+echo '<pre>';
+var_dump($quotationTransaction);
+
+/*
+$codedir = '../VideoStoreService';
 
 require_once("$codedir/Movie.php");
 require_once("$codedir/Rental.php");
@@ -26,3 +46,4 @@ $statement = $customer->statement();
 echo '<pre>';
 echo $statement;
 echo '</pre>';
+*/
