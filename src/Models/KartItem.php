@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Models;
 
+use Error;
+
 class KartItem
 {
     public function __construct(
@@ -15,11 +17,11 @@ class KartItem
     )
     {
         if ($this->rentTime < 0) {
-            throw new \Error('Rental time cannot be a negate value');
+            throw new Error('Rental time cannot be a negate value');
         }
 
         if ($this->price < 0) {
-            throw new \Error('Price cannot be a negate value');
+            throw new Error('Price cannot be a negate value');
         }
 
         $this->calculateBasePrice();
@@ -35,6 +37,8 @@ class KartItem
         $this->price = $this->rentTime > 0
             ? ($this->rentTime * $this->product->unitPrice)
             : $this->product->unitPrice;
+
+        // Implement any kind of pricing calculations here
 
         return $this->price;
     }

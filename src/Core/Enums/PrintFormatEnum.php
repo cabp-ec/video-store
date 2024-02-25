@@ -10,4 +10,5 @@ enum PrintFormatEnum
     case HTML;
     case PDF;
     case MARKDOWN;
+    case JSON;
 }

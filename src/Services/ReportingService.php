@@ -36,24 +36,7 @@ class ReportingService
         $kart = $transaction->getKart();
         $kartItems = $kart->getItems();
 
-        /*foreach ($kartItems as $kartItem) {
-            echo $kartItem->product->name . "\t";
-            echo $kartItem->getPrice() . "\t";
-            echo $kartItem->qty . "\t";
-            echo $kartItem->rentTime . "\t";
-            echo $kartItem->getTotalPrice() . "\t";
-            echo "\n";
-        }*/
-
-//        echo "\nTOTAL: " . $transaction->getTotal();
-//        echo "\nPOINTS: " . $transaction->getEarnedPoints();
-
-        $content = include($tplFilePath);
-//        echo $content;
-//        var_dump($items);
-//        exit;
-
-        return $content;
+        return include($tplFilePath);
     }
 
     /**
@@ -103,24 +86,15 @@ class ReportingService
 
     public function printTransaction(
         TransactionInterface $transaction,
-        PrintFormatEnum      $format,
-        ?string              $filePath = null
+        PrintFormatEnum      $format
     ): string
     {
-
-        $content = match ($format) {
+        return match ($format) {
             PrintFormatEnum::HTML => $this->printTransactionAsHtml($transaction),
             PrintFormatEnum::PDF => $this->printTransactionAsPdf($transaction),
             PrintFormatEnum::MARKDOWN => $this->printTransactionAsMarkdown($transaction),
             default => $this->printTransactionAsText($transaction),
         };
-
-        if ($filePath) {
-            // TODO: write the output file
-            return $filePath;
-        }
-
-        return $content;
     }
 
     /**

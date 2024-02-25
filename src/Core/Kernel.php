@@ -6,7 +6,6 @@ namespace Core;
 
 use Core\Enums\PrintFormatEnum;
 use Core\Interfaces\KartInterface;
-use Core\Interfaces\PrintableInterface;
 use Models\Enums\TransactionTypeEnum;
 use Models\Interfaces\CustomerInterface;
 use Models\Interfaces\TransactionInterface;
@@ -50,6 +49,7 @@ final class Kernel extends AbstractStoreManager
     public function runTaxation(array $transactions): array
     {
         // TODO: implement
+//        return $this->taxationService->run($transactions);
         return $transactions;
     }
 
@@ -58,18 +58,17 @@ final class Kernel extends AbstractStoreManager
      */
     public function printTransaction(
         TransactionInterface $transaction,
-        PrintFormatEnum      $format = PrintFormatEnum::TEXT,
-        ?string              $filePath = null
+        PrintFormatEnum      $format = PrintFormatEnum::TEXT
     ): void
     {
         header(self::CONTENT_TYPE . $this->reportingService->getMimeType($format));
-        echo $this->reportingService->printTransaction($transaction, $format, $filePath);
+        echo $this->reportingService->printTransaction($transaction, $format);
     }
 
     /**
      * @inheritDoc
      */
-    public function exportTransaction(
+    public function exportTransactionToFile(
         TransactionInterface $transaction,
         PrintFormatEnum      $format = PrintFormatEnum::TEXT,
         ?string              $filePath = null

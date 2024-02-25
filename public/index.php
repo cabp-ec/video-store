@@ -61,11 +61,14 @@ $leather_goddesses_of_phobos = new MovieProductModel(
 // 3. A customer
 $customerJohnDoe = new CustomerModel('John Doe', 'Boston');
 
-// 4. Add products to the kart
+/**
+ * 4. Add products to the kart
+ * - Start using the service as a microservice within AWS
+ */
 $service = new Kernel();
 
 $kart = $service->getKart();
-$kart->addItem($predator_1, 1, 1)
+$kart->addItem($predator_1, 1, 0)
 //    ->addItem($predator_2, 1, 3)
     ->addItem($samaritan_2, 1, 3)
     ->addItem($spiderman_and_friends, 1, 1);
@@ -80,4 +83,4 @@ $quotation = $service->runTaxation(
     )
 )[0];
 
-$service->printTransaction($quotation, PrintFormatEnum::HTML);
+ $service->printTransaction($quotation);

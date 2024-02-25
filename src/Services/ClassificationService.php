@@ -12,6 +12,7 @@ use Services\Interfaces\TransactionalServiceInterface;
 
 final class ClassificationService implements TransactionalServiceInterface
 {
+    // TODO: the following constants should be taken from the ENV (e.g. a .env file for the local ENV)
     private const PRICE_REGULAR = 2;
     private const PRICE_CHILDREN = 1.5;
     private const RENT_TIME_LIMIT_REGULAR = 2;

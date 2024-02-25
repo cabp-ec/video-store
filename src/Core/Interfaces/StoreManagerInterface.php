@@ -62,8 +62,7 @@ interface StoreManagerInterface
      */
     public function printTransaction(
         TransactionInterface $transaction,
-        PrintFormatEnum      $format = PrintFormatEnum::TEXT,
-        ?string              $filePath = null
+        PrintFormatEnum      $format = PrintFormatEnum::TEXT
     ): void;
 
     /**
@@ -74,7 +73,7 @@ interface StoreManagerInterface
      * @param string|null $filePath
      * @return bool
      */
-    public function exportTransaction(
+    public function exportTransactionToFile(
         TransactionInterface $transaction,
         PrintFormatEnum      $format = PrintFormatEnum::TEXT,
         ?string              $filePath = null
